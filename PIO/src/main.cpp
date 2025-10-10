@@ -9,6 +9,7 @@ extern "C" {
     UART_HandleTypeDef huart1;
     UART_HandleTypeDef huart2;
     UART_HandleTypeDef huart6;
+    
 
     void SystemClock_Config(void);
     void MX_GPIO_Init(void);
@@ -27,8 +28,17 @@ int main() {
     MX_USART1_UART_Init();
     MX_USART2_UART_Init();
 
+    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+    uint8_t rx_byte;
+    HAL_StatusTypeDef status;
+    char hi[] = "bye";
     for (;;) {
-        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13); // пример: мигание LED
-        HAL_Delay(500);
+        status = HAL_UART_Receive(&huart2, &rx_byte, 1, 100);
+        if(status == HAL_OK) {
+
+            HAL_UART_Transmit(&huart2, (uint8_t*)hi, 3,100);
+            HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+            break;
+        }
     }
 }
