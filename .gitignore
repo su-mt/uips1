@@ -1,0 +1,17 @@
+# PlatformIO
+/.pio
+/.vscode
+
+# CubeMX generated files
+/cubeMX_codeGen/Drivers
+/cubeMX_codeGen/Debug
+/cubeMX_codeGen/Release
+/cubeMX_codeGen/Inc
+/cubeMX_codeGen/Src
+
+# General
+*.o
+*.elf
+*.bin
+*.hex
+*.map
