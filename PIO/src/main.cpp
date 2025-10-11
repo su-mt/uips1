@@ -43,7 +43,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
         }
 
         // Перезапускаем приём следующего байта
-                HAL_UART_Receive_IT(&huart2, (uint8_t*)&rx_byte, 1);
 
     
 }
@@ -82,3 +81,5 @@ int main() {
         
     }
 }
+
+
