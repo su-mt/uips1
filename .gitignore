@@ -3,6 +3,7 @@
 /.vscode
 
 # CubeMX generated files
+*.code-workspace
 /cubeMX_codeGen/Drivers
 /cubeMX_codeGen/Debug
 /cubeMX_codeGen/Release

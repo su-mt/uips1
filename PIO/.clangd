@@ -1,0 +1,42 @@
+# Общие флаги для всех файлов
+CompileFlags:
+  Add:
+    - "--target=arm-none-eabi"
+    - "-mcpu=cortex-m4"
+    - "-mthumb"
+    - "-mfloat-abi=hard"
+    - "-mfpu=fpv4-sp-d16"
+    - "-DSTM32F411xE"
+    - "-DSTM32F4xx"
+    - "-DUSE_HAL_DRIVER"
+    - "-I/Users/mt/.platformio/packages/toolchain-gccarmnoneeabi/arm-none-eabi/include/c++/7.2.1"
+    - "-I/Users/mt/.platformio/packages/toolchain-gccarmnoneeabi/arm-none-eabi/include/c++/7.2.1/arm-none-eabi/hard"
+Index:
+  Background: Build
+
+Diagnostics:
+  UnusedIncludes: None
+  MissingIncludes: None
+
+InlayHints:
+  Enabled: No
+
+---
+
+# Конфигурация для C файлов
+If:
+  PathMatch: .*\.(c|h)$
+CompileFlags:
+  Add:
+    - "-xc"
+    - "-std=c11"
+
+---
+
+# Конфигурация для C++ файлов
+If:
+  PathMatch: .*\.(cpp|hpp|cc|cxx)$
+CompileFlags:
+  Add:
+    - "-xc++"
+    - "-std=c++17"
