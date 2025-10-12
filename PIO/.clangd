@@ -9,6 +9,8 @@ CompileFlags:
     - "-DSTM32F411xE"
     - "-DSTM32F4xx"
     - "-DUSE_HAL_DRIVER"
+    - "-I/Users/mt/embedded/uips1/PIO/cubemx/Core/Inc"
+    - "-I/Users/mt/embedded/uips1/PIO/cubemx/Drivers/STM32F4xx_HAL_Driver/Inc"
     - "-I/Users/mt/.platformio/packages/toolchain-gccarmnoneeabi/arm-none-eabi/include/c++/7.2.1"
     - "-I/Users/mt/.platformio/packages/toolchain-gccarmnoneeabi/arm-none-eabi/include/c++/7.2.1/arm-none-eabi/hard"
 Index:
