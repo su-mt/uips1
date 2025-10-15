@@ -210,7 +210,7 @@ void MX_TIM3_Init () {
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     if(htim->Instance == TIM3) {
         const uint8_t msg[] = "overflow\r\n";
-        HAL_UART_Transmit(&huart2, msg, sizeof(msg), 100);
+        //HAL_UART_Transmit(&huart2, msg, sizeof(msg), 100);
         huart2_Handler(true);
     }
 }
