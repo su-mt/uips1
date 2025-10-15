@@ -1,6 +1,7 @@
 #include "UART2.h"
 #include "TIM3.h"
 #include <cstring>
+#include <stdlib.h>
 
 // Глобальные переменные UART2
 uint8_t uart2Buff[5];
@@ -36,8 +37,12 @@ void uips_start() {
 }
 
 void uips_stop() {
-    const uint8_t msg[] = "STOP OK\r\n";
+    const uint8_t msg[] = "STOP \033[32m OK \033[0m\r\n";
     HAL_UART_Transmit(&huart2, msg, sizeof(msg)-1, 100);
+
+    exit(0);
+
+
 }
 
 void uips_getCurrent() {
