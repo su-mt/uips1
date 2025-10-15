@@ -23,7 +23,7 @@ def create_command(cmd_code):
     Создание команды по протоколу
     Формат: [0xA0, 0x00, 0x81, cmd_code, checksum]
     """
-    packet = [0xA0, 0x00, 0x81, cmd_code]
+    packet = [0x80, 0x00, 0x81, cmd_code]
     checksum = calculate_checksum(packet)
     packet.append(checksum)
     return bytes(packet)

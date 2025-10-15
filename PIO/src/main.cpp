@@ -109,7 +109,7 @@ void huart2_Handler (bool overflow) {
         
     } else {
         // пришел пакет
-        if (iscorrect(uart2Buff) or !iscorrect(uart2Buff)) {
+        if (iscorrect(uart2Buff) ) {
             switch (uart2Buff[3]) {
             case 0xF1:
                 uips_start();
@@ -127,7 +127,7 @@ void huart2_Handler (bool overflow) {
                 uips_getConsts();
                 break;
             default: 
-                uips_err();
+                //uips_err();
                 break;
             }
         }
