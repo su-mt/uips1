@@ -54,19 +54,14 @@ int main() {
 
     HAL_UART_Receive_IT(&huart2, &uart2_rxByte, 1);
 
-
-
-
-
-
 }
 
-    void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) { 
-        if (huart->Instance == USART2){
-            huart2_Handler(false);
-        } else if (huart->Instance == USART1) {
-            huart1_Handler(false);
-        } else if (huart->Instance == USART6) {
-            huart6_Handler(false);
-        }
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) { 
+    if (huart->Instance == USART2){
+        huart2_Handler(false);
+    } else if (huart->Instance == USART1) {
+        huart1_Handler(false);
+    } else if (huart->Instance == USART6) {
+        huart6_Handler(false);
     }
+}
