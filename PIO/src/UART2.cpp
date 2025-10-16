@@ -1,21 +1,18 @@
 #include "UART2.h"
 #include "TIM3.h"
+#include "utils.h"
 #include <cstring>
 #include <stdlib.h>
 
+
+extern bool enable;
 // Глобальные переменные UART2
 uint8_t uart2Buff[5];
 uint8_t uart2_rxByte;     
 uint8_t uart2_rxCount = 0;
 
 // Функция вычисления контрольной суммы
-uint8_t checksum(uint8_t* buff, char length) {
-    uint8_t checksum = 0;
-    for(uint8_t i = 0; i < length; i++) {
-        checksum ^= buff[i];
-    }
-    return checksum;
-}
+
 
 // Проверка корректности пакета
 bool iscorrectAddr(uint8_t* buff) {
@@ -32,11 +29,16 @@ bool iscorrectAddr(uint8_t* buff) {
 
 // Команды протокола
 void uips_start() {
+    enable = true;
     const uint8_t msg[] = "START OK\r\n";
     HAL_UART_Transmit(&huart2, msg, sizeof(msg)-1, 100);
 }
 
 void uips_stop() {
+    if (!enable){
+        return;
+    }
+    enable = false;
     const uint8_t msg[] = "STOP \033[32m OK \033[0m\r\n";
     HAL_UART_Transmit(&huart2, msg, sizeof(msg)-1, 100);
 
@@ -46,22 +48,34 @@ void uips_stop() {
 }
 
 void uips_getCurrent() {
+    if (!enable){
+        return;
+    }
     const uint8_t msg[] = "CURRENT: 0\r\n";
     HAL_UART_Transmit(&huart2, msg, sizeof(msg)-1, 100);
 }
 
 void uips_getResistance() {
+    if (!enable){
+        return;
+    }
     const uint8_t msg[] = "RESISTANCE: 0\r\n";
     HAL_UART_Transmit(&huart2, msg, sizeof(msg)-1, 100);
 }
 
 void uips_getConsts() {
+    if (!enable){
+        return;
+    }
     const uint8_t msg[] = "CONSTS: OK\r\n";
     HAL_UART_Transmit(&huart2, msg, sizeof(msg)-1, 100);
 }
 
 void uips_err() {
-    const uint8_t msg[] = "ERROR\r\n";
+    if (!enable){
+        return;
+    }
+    const uint8_t msg[] = "Function code ERROR\r\n";
     HAL_UART_Transmit(&huart2, msg, sizeof(msg)-1, 100);
 }
 
