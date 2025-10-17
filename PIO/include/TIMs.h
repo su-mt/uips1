@@ -1,5 +1,5 @@
-#ifndef TIM3_H
-#define TIM3_H
+#ifndef TIMS_H
+#define TIMS_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,9 +13,10 @@ extern TIM_HandleTypeDef htim3;
 
 // Функции инициализации
 void MX_TIM3_Init(void);
+void MX_TIM2_Init(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // TIM3_H
+#endif // TIMS_H

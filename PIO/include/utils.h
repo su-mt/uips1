@@ -1,6 +1,6 @@
 
-#ifndef UART2_H
-#define UART2_H
+#ifndef UTILS_H
+#define UTILS_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,7 +16,7 @@ uint8_t checksum(uint8_t* buff, char length);
 }
 #endif
 
-#endif // UART2_H
+#endif // UTILS_H
 
 
 

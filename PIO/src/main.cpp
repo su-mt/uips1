@@ -5,11 +5,12 @@
 #include "UART2.h"
 #include "UART1.h"
 #include "UART6.h"
-#include "TIM3.h"
-#include "stm32f411xe.h"
+#include "TIMs.h"
+
 
 extern "C" {
     #include "main.h"
+    #include "stm32f411xe.h"
     #include "stm32f4xx_hal.h"
     #include "stm32f4xx_hal_tim.h"
     #include "stm32f4xx_hal_gpio.h"
@@ -45,6 +46,7 @@ int main() {
     MX_USART1_UART_Init();
     MX_USART2_UART_Init();
     MX_TIM3_Init();
+    MX_TIM2_Init();
 
     HAL_Delay(500);
     HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);

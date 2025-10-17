@@ -1,14 +1,8 @@
 
-#ifndef UART2_H
-#define UART2_H
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include "main.h"
-#include "stm32f4xx_hal.h"
-#include <stdbool.h>
+#include <cstddef>
+#include <cstdint>
+#include "utils.h"
+#
 
 uint8_t checksum(uint8_t* buff, char length) {
     uint8_t checksum = 0;
@@ -18,13 +12,6 @@ uint8_t checksum(uint8_t* buff, char length) {
     return checksum;
 }
 
-
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif // UART2_H
 
 
 
