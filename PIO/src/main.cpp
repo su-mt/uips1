@@ -6,6 +6,7 @@
 #include "UART1.h"
 #include "UART6.h"
 #include "TIMs.h"
+#include "ADC.h"
 
 
 extern "C" {
@@ -20,11 +21,7 @@ extern "C" {
 
 // _main.c
 extern "C" {
-    ADC_HandleTypeDef hadc1;
-
-    void SystemClock_Config(void);
     void MX_GPIO_Init(void);
-    void MX_ADC1_Init(void);
     void MX_USART6_UART_Init(void);
     void MX_USART1_UART_Init(void);
 }
@@ -34,28 +31,44 @@ bool enabled = false;
 
 // Callback при приеме данных по UART
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
+void init ();
+
 
 
 int main() {
-    HAL_Init();
-    SystemClock_Config();
-
-    MX_GPIO_Init();
-    MX_ADC1_Init();
-    MX_USART6_UART_Init();
-    MX_USART1_UART_Init();
-    MX_USART2_UART_Init();
-    MX_TIM3_Init();
-    MX_TIM2_Init();
-
+    init();
     HAL_Delay(500);
-    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+    
+
+
+    // wait for consts
 
     const uint8_t msg[] = "Wait for start command\r\n";
     HAL_UART_Transmit(&huart2, msg, sizeof(msg), 100);
 
     HAL_UART_Receive_IT(&huart2, &uart2_rxByte, 1);
 
+    while(1) {
+
+    }
+}
+
+void init () {
+    HAL_Init();
+
+    SystemClock_Config();
+
+    MX_GPIO_Init();
+
+    MX_USART6_UART_Init();
+    MX_USART1_UART_Init();
+    MX_USART2_UART_Init();
+
+    MX_TIM3_Init();
+    MX_TIM2_Init();
+
+    MX_DMA_Init();
+    MX_ADC1_Init();
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) { 

@@ -1,6 +1,8 @@
 git add /Users/mt/embedded/uips1
 git commit -m "Safe before cubemx sync"
 
+diff -r cubeMX_codeGen/Drivers PIO/cubemx/Drivers
+diff -r cubeMX_codeGen/Core PIO/cubemx/Core/
 read -p "Продолжить (y/n)? " ans
 case "$ans" in
     [Yy]*) 

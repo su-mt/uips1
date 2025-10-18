@@ -5,7 +5,7 @@ import sys
 import time
 
 # Настройки порта
-PORT = '/dev/cu.usbmodem21403'
+PORT = '/dev/cu.usbmodem1403'
 BAUDRATE = 115200
 
 # Флаг для остановки потока чтения

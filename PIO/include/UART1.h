@@ -10,8 +10,8 @@ extern "C" {
 #include "stm32f4xx_hal.h"
 #include <stdbool.h>
 
-
-extern UART_HandleTypeDef huart6;
+// Глобальная переменная UART1
+extern UART_HandleTypeDef huart1;
 
 void MX_USART1_UART_Init(void);
 

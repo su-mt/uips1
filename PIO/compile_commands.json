@@ -588,9 +588,45 @@
         "output": ".pio/build/genericSTM32F411RE/cubemx/Core/Src/system_stm32f4xx.o"
     },
     {
+        "command": "/Users/mt/.platformio/packages/toolchain-gccarmnoneeabi/bin/arm-none-eabi-g++ -o .pio/build/genericSTM32F411RE/src/ADC.o -c -std=c++17 -fno-rtti -fno-exceptions -fno-exceptions -fno-rtti -fno-threadsafe-statics -mthumb -mcpu=cortex-m4 -Os -ffunction-sections -fdata-sections -Wall -nostdlib -DPLATFORMIO=60118 -DSTM32F4 -DSTM32F411xE -DSTM32F4xx -DUSE_HAL_DRIVER -DSTM32F411xE -DSTM32CubeMX -DUSE_HAL_DRIVER -DF_CPU=100000000L -Iinclude -Isrc -Icubemx/Core/Inc -Icubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include -Icubemx/Drivers/CMSIS/Include -Isrc -Iinclude -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/Include -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/Device/ST/STM32F4xx/Include -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/STM32F4xx_HAL_Driver/Inc -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/STM32F4xx_HAL_Driver/Src -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/DSP/Include src/ADC.cpp",
+        "directory": "/Users/mt/embedded/uips1/PIO",
+        "file": "src/ADC.cpp",
+        "output": ".pio/build/genericSTM32F411RE/src/ADC.o"
+    },
+    {
+        "command": "/Users/mt/.platformio/packages/toolchain-gccarmnoneeabi/bin/arm-none-eabi-g++ -o .pio/build/genericSTM32F411RE/src/TIMs.o -c -std=c++17 -fno-rtti -fno-exceptions -fno-exceptions -fno-rtti -fno-threadsafe-statics -mthumb -mcpu=cortex-m4 -Os -ffunction-sections -fdata-sections -Wall -nostdlib -DPLATFORMIO=60118 -DSTM32F4 -DSTM32F411xE -DSTM32F4xx -DUSE_HAL_DRIVER -DSTM32F411xE -DSTM32CubeMX -DUSE_HAL_DRIVER -DF_CPU=100000000L -Iinclude -Isrc -Icubemx/Core/Inc -Icubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include -Icubemx/Drivers/CMSIS/Include -Isrc -Iinclude -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/Include -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/Device/ST/STM32F4xx/Include -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/STM32F4xx_HAL_Driver/Inc -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/STM32F4xx_HAL_Driver/Src -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/DSP/Include src/TIMs.cpp",
+        "directory": "/Users/mt/embedded/uips1/PIO",
+        "file": "src/TIMs.cpp",
+        "output": ".pio/build/genericSTM32F411RE/src/TIMs.o"
+    },
+    {
+        "command": "/Users/mt/.platformio/packages/toolchain-gccarmnoneeabi/bin/arm-none-eabi-g++ -o .pio/build/genericSTM32F411RE/src/UART1.o -c -std=c++17 -fno-rtti -fno-exceptions -fno-exceptions -fno-rtti -fno-threadsafe-statics -mthumb -mcpu=cortex-m4 -Os -ffunction-sections -fdata-sections -Wall -nostdlib -DPLATFORMIO=60118 -DSTM32F4 -DSTM32F411xE -DSTM32F4xx -DUSE_HAL_DRIVER -DSTM32F411xE -DSTM32CubeMX -DUSE_HAL_DRIVER -DF_CPU=100000000L -Iinclude -Isrc -Icubemx/Core/Inc -Icubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include -Icubemx/Drivers/CMSIS/Include -Isrc -Iinclude -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/Include -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/Device/ST/STM32F4xx/Include -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/STM32F4xx_HAL_Driver/Inc -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/STM32F4xx_HAL_Driver/Src -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/DSP/Include src/UART1.cpp",
+        "directory": "/Users/mt/embedded/uips1/PIO",
+        "file": "src/UART1.cpp",
+        "output": ".pio/build/genericSTM32F411RE/src/UART1.o"
+    },
+    {
+        "command": "/Users/mt/.platformio/packages/toolchain-gccarmnoneeabi/bin/arm-none-eabi-g++ -o .pio/build/genericSTM32F411RE/src/UART2.o -c -std=c++17 -fno-rtti -fno-exceptions -fno-exceptions -fno-rtti -fno-threadsafe-statics -mthumb -mcpu=cortex-m4 -Os -ffunction-sections -fdata-sections -Wall -nostdlib -DPLATFORMIO=60118 -DSTM32F4 -DSTM32F411xE -DSTM32F4xx -DUSE_HAL_DRIVER -DSTM32F411xE -DSTM32CubeMX -DUSE_HAL_DRIVER -DF_CPU=100000000L -Iinclude -Isrc -Icubemx/Core/Inc -Icubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include -Icubemx/Drivers/CMSIS/Include -Isrc -Iinclude -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/Include -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/Device/ST/STM32F4xx/Include -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/STM32F4xx_HAL_Driver/Inc -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/STM32F4xx_HAL_Driver/Src -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/DSP/Include src/UART2.cpp",
+        "directory": "/Users/mt/embedded/uips1/PIO",
+        "file": "src/UART2.cpp",
+        "output": ".pio/build/genericSTM32F411RE/src/UART2.o"
+    },
+    {
+        "command": "/Users/mt/.platformio/packages/toolchain-gccarmnoneeabi/bin/arm-none-eabi-g++ -o .pio/build/genericSTM32F411RE/src/UART6.o -c -std=c++17 -fno-rtti -fno-exceptions -fno-exceptions -fno-rtti -fno-threadsafe-statics -mthumb -mcpu=cortex-m4 -Os -ffunction-sections -fdata-sections -Wall -nostdlib -DPLATFORMIO=60118 -DSTM32F4 -DSTM32F411xE -DSTM32F4xx -DUSE_HAL_DRIVER -DSTM32F411xE -DSTM32CubeMX -DUSE_HAL_DRIVER -DF_CPU=100000000L -Iinclude -Isrc -Icubemx/Core/Inc -Icubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include -Icubemx/Drivers/CMSIS/Include -Isrc -Iinclude -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/Include -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/Device/ST/STM32F4xx/Include -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/STM32F4xx_HAL_Driver/Inc -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/STM32F4xx_HAL_Driver/Src -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/DSP/Include src/UART6.cpp",
+        "directory": "/Users/mt/embedded/uips1/PIO",
+        "file": "src/UART6.cpp",
+        "output": ".pio/build/genericSTM32F411RE/src/UART6.o"
+    },
+    {
         "command": "/Users/mt/.platformio/packages/toolchain-gccarmnoneeabi/bin/arm-none-eabi-g++ -o .pio/build/genericSTM32F411RE/src/main.o -c -std=c++17 -fno-rtti -fno-exceptions -fno-exceptions -fno-rtti -fno-threadsafe-statics -mthumb -mcpu=cortex-m4 -Os -ffunction-sections -fdata-sections -Wall -nostdlib -DPLATFORMIO=60118 -DSTM32F4 -DSTM32F411xE -DSTM32F4xx -DUSE_HAL_DRIVER -DSTM32F411xE -DSTM32CubeMX -DUSE_HAL_DRIVER -DF_CPU=100000000L -Iinclude -Isrc -Icubemx/Core/Inc -Icubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include -Icubemx/Drivers/CMSIS/Include -Isrc -Iinclude -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/Include -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/Device/ST/STM32F4xx/Include -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/STM32F4xx_HAL_Driver/Inc -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/STM32F4xx_HAL_Driver/Src -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/DSP/Include src/main.cpp",
         "directory": "/Users/mt/embedded/uips1/PIO",
         "file": "src/main.cpp",
         "output": ".pio/build/genericSTM32F411RE/src/main.o"
+    },
+    {
+        "command": "/Users/mt/.platformio/packages/toolchain-gccarmnoneeabi/bin/arm-none-eabi-g++ -o .pio/build/genericSTM32F411RE/src/utils.o -c -std=c++17 -fno-rtti -fno-exceptions -fno-exceptions -fno-rtti -fno-threadsafe-statics -mthumb -mcpu=cortex-m4 -Os -ffunction-sections -fdata-sections -Wall -nostdlib -DPLATFORMIO=60118 -DSTM32F4 -DSTM32F411xE -DSTM32F4xx -DUSE_HAL_DRIVER -DSTM32F411xE -DSTM32CubeMX -DUSE_HAL_DRIVER -DF_CPU=100000000L -Iinclude -Isrc -Icubemx/Core/Inc -Icubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include -Icubemx/Drivers/CMSIS/Include -Isrc -Iinclude -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/Include -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/Device/ST/STM32F4xx/Include -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/STM32F4xx_HAL_Driver/Inc -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/STM32F4xx_HAL_Driver/Src -I/Users/mt/.platformio/packages/framework-stm32cubef4/Drivers/CMSIS/DSP/Include src/utils.cpp",
+        "directory": "/Users/mt/embedded/uips1/PIO",
+        "file": "src/utils.cpp",
+        "output": ".pio/build/genericSTM32F411RE/src/utils.o"
     }
 ]
