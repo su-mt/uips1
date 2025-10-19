@@ -6,7 +6,7 @@
 #include "UART1.h"
 #include "UART6.h"
 #include "TIMs.h"
-#include "ADC.h"
+#include "ADC.hpp"
 
 
 extern "C" {

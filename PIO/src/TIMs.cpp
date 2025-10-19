@@ -1,9 +1,8 @@
 #include "TIMs.h"
 #include "UART2.h"
 
-// Глобальные переменные таймеров
-TIM_HandleTypeDef htim3;  // ОПРЕДЕЛЕНИЕ
-TIM_HandleTypeDef htim2;  // ОПРЕДЕЛЕНИЕ
+TIM_HandleTypeDef htim3;  
+TIM_HandleTypeDef htim2;  
 
 // Инициализация TIM3
 void MX_TIM3_Init() {
@@ -50,7 +49,7 @@ void MX_TIM2_Init() {
         Error_Handler();
     }
 
-    TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+    // TIM_ClockConfigTypeDef sClockSourceConfig = {0};
     TIM_MasterConfigTypeDef sMasterConfig = {0};
     sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
     sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;

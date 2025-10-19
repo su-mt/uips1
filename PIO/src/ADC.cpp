@@ -1,12 +1,16 @@
-#include "ADC.h"
+#include "ADC.hpp"
+#include "constants.hpp"
 #include "main.h"
+#include "stm32f411xe.h"
+#include "stm32f4xx_hal_gpio.h"
+
 
 // Глобальные переменные АЦП и DMA
 ADC_HandleTypeDef hadc1;     
 DMA_HandleTypeDef hdma_adc1;  
 
 // volatile struct
-ADC_PINS_BUFF buff;
+ADC_VoltageBuffers_t buff;
 
 
 
@@ -76,11 +80,24 @@ void MX_ADC1_Init() {
 }
 
 
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef& hadc) {
-    if (hadc.Instance != ADC1) {
+extern "C" void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc) {
+    if (hadc->Instance != ADC1) {
         return;
     }
+    if (buff.main >= voltage_lower_bound) {
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10, GPIO_PIN_SET);
+        
+    } else if (buff.reserve >= voltage_lower_bound) {
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10, GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
 
+
+    } else {
+
+
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10, GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
+    }
 
     
 }

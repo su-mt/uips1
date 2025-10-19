@@ -3,7 +3,7 @@
 #include "utils.h"
 #include <cstring>
 #include <stdlib.h>
-
+#include "constants.hpp"
 
 extern bool enabled;
 
