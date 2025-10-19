@@ -49,10 +49,15 @@ void MX_TIM2_Init() {
         Error_Handler();
     }
 
-    // TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+
     TIM_MasterConfigTypeDef sMasterConfig = {0};
-    sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+    sMasterConfig.MasterOutputTrigger = TIM_TRGO_UPDATE;  
     sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+    
+    if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK) {
+        Error_Handler();
+    }
+    
     HAL_TIM_Base_Start(&htim2);
 }
 

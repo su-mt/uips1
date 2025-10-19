@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
+#include "PowerManager.hpp"
 #include "UART2.h"
 #include "UART1.h"
 #include "UART6.h"
@@ -33,7 +34,7 @@ bool enabled = false;
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 void init ();
 
-
+extern PowerManager power_manager;
 
 int main() {
     init();
@@ -50,6 +51,12 @@ int main() {
 
     while(1) {
 
+        // проверка кан
+        power_manager.update();  
+        if (power_manager.check_and_clear_flag()) {
+            power_manager.check_and_switch(adc_vol_buff);
+        }
+        
     }
 }
 

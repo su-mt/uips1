@@ -1,4 +1,5 @@
 #include "ADC.hpp"
+#include "PowerManager.hpp"
 #include "constants.hpp"
 #include "main.h"
 #include "stm32f411xe.h"
@@ -10,7 +11,9 @@ ADC_HandleTypeDef hadc1;
 DMA_HandleTypeDef hdma_adc1;  
 
 // volatile struct
-ADC_VoltageBuffers_t buff;
+ADC_VoltageBuffers_t adc_vol_buff;
+
+PowerManager power_manager;
 
 
 
@@ -74,30 +77,16 @@ void MX_ADC1_Init() {
         Error_Handler();
     }
 
-    if (HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&buff, 4) != HAL_OK) {
+    if (HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&adc_vol_buff, 4) != HAL_OK) {
         Error_Handler();
     }
 }
 
 
+// Callback вызывается когда DMA завершил передачу 4 значений ADC
+// Вызывается каждые 100 мс (частота TIM2 TRGO)
 extern "C" void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc) {
-    if (hadc->Instance != ADC1) {
-        return;
+    if (hadc->Instance == ADC1) {
+        power_manager.set_flag(true);
     }
-    if (buff.main >= voltage_lower_bound) {
-        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10, GPIO_PIN_SET);
-        
-    } else if (buff.reserve >= voltage_lower_bound) {
-        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10, GPIO_PIN_RESET);
-        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
-
-
-    } else {
-
-
-        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10, GPIO_PIN_RESET);
-        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
-    }
-
-    
 }

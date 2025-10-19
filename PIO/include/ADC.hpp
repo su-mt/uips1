@@ -13,6 +13,7 @@ extern "C" {
 }
 #endif
 
+
 struct ADC_VoltageBuffers_t {
     volatile uint16_t main;
     volatile uint16_t reserve;
@@ -58,7 +59,7 @@ public:
 
 
 // Глобальные переменные АЦП и DMA
-extern struct ADC_VoltageBuffers_t buff;
+extern struct ADC_VoltageBuffers_t adc_vol_buff;
 
 extern ADC_HandleTypeDef hadc1;
 extern DMA_HandleTypeDef hdma_adc1;

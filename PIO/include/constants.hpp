@@ -12,7 +12,7 @@ constexpr float voltage_lower_bound = 5;
 
 // Константы датчика (13 байт)
 
-typedef struct SystemConstants_t {
+typedef struct __attribute__((packed)) SystemConstants_t {
     uint8_t  address;        // 0x80 ('A')
     uint8_t  reserved1;      // 0x00
     uint8_t  reserved2;      // 0x01
@@ -34,7 +34,7 @@ typedef struct SystemConstants_t {
     
     uint8_t  group;          // Группа: 'Б', 'Г' или 'Ш'
     uint8_t  checksum;       // 0x00
-} SystemConstants_t; __attribute__((packed));
+} SystemConstants_t ;
 
 class SystemConstants {
 private:
