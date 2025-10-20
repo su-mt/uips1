@@ -1,31 +1,38 @@
 #include "UART2.h"
+#include "ADC.hpp"
 #include "TIMs.h"
 #include "utils.h"
+#include <cstdint>
 #include <cstring>
 #include <stdlib.h>
 #include "constants.hpp"
+#include "Packets.hpp"
 
 extern bool enabled;
 
 // Глобальные переменные UART2
 UART_HandleTypeDef huart2;  
-uint8_t uart2Buff[5];
+uint8_t uart2Buff[21];
 uint8_t uart2_rxByte;     
 uint8_t uart2_rxCount = 0;
 
 
+// Обработчик UART2
+void huart2_Handler(bool overflow) {
+    if (!overflow) {
+        uart2Buff[uart2_rxCount++] = uart2_rxByte;
+        __HAL_TIM_SET_COUNTER(&htim3, 0);
+        
+    } else {
+        
+        Packet().process(uart2Buff, uart2_rxCount);
 
-// Проверка корректности пакета
-bool iscorrectAddr(uint8_t* buff) {
-    if (uart2Buff[0] == 0x80 \
-    && uart2Buff[1] == 0 \
-    && uart2Buff[2] == 0x81 \
-    && uart2Buff[3] >= 0xF1 && uart2Buff[3] <= 0xF5 \
-    && uart2Buff[4] == checksum(buff, 4) ) {
-        return true;
+        // Очистка буфера и сброс счетчика после обработки пакета
+        memset(uart2Buff, 0, 21);
+        uart2_rxCount = 0;
     }
-    return false;
-
+    // Перезапуск приема следующего байта
+    HAL_UART_Receive_IT(&huart2, &uart2_rxByte, 1);
 }
 
 // Команды протокола
@@ -53,7 +60,8 @@ void uips_getCurrent() {
         return;
     }
     const uint8_t msg[] = "CURRENT: 0\r\n";
-    HAL_UART_Transmit(&huart2, msg, sizeof(msg)-1, 100);
+    //HAL_UART_Transmit(&huart2, msg, sizeof(msg)-1, 100);
+    HAL_UART_Transmit(&huart2, (const uint8_t*) &adc_vol_buff, sizeof(adc_vol_buff)-1, 100);
 }
 
 void uips_getResistance() {
@@ -80,44 +88,14 @@ void uips_err() {
     HAL_UART_Transmit(&huart2, msg, sizeof(msg)-1, 100);
 }
 
-// Обработчик UART2
-void huart2_Handler(bool overflow) {
-    if (!overflow) {
-        uart2Buff[uart2_rxCount++] = uart2_rxByte;
-        __HAL_TIM_SET_COUNTER(&htim3, 0);
-        
-    } else {
-        // пришел пакет
-        if (iscorrectAddr(uart2Buff)) {
-            switch (uart2Buff[3]) {
-            case 0xF1:
-                uips_start();
-                break;
-            case 0xF2:
-                uips_stop();
-                break;
-            case 0xF3:
-                uips_getCurrent();
-                break;
-            case 0xF4:
-                uips_getResistance();
-                break;
-            case 0xF5:
-                uips_getConsts();
-                break;
-            default: 
-                //uips_err();
-                break;
-            }
-        }
-        // Очистка буфера и сброс счетчика после обработки пакета
-        memset(uart2Buff, 0, 5);
-        uart2_rxCount = 0;
-    }
-    // Перезапуск приема следующего байта
-    HAL_UART_Receive_IT(&huart2, &uart2_rxByte, 1);
+
+void uips_sendConsts() {
+    return;
 }
 
+void uips_saveCurr() {
+    return;
+}
 
 void MX_USART2_UART_Init(void) {
 

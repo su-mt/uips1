@@ -17,9 +17,9 @@ enum class PowerSource {
 };
 
 enum class SwitchState {
-    IDLE,              // Нет активного переключения
-    WAIT_DEAD_TIME,    // Ждем dead time после выключения
-    COMPLETED          // Переключение завершено
+    IDLE,              
+    WAIT_DEAD_TIME,    
+    COMPLETED          
 };
 
 class PowerManager {
@@ -27,48 +27,44 @@ private:
     volatile bool flag = false;
 
     PowerSource current_source;
-    PowerSource pending_source;    // Куда переключаемся
+    PowerSource pending_source;    
     SwitchState switch_state;
     
     uint8_t violation_count;
-    uint32_t switch_start_time;    // Время начала переключения (мкс)
+    uint32_t switch_start_time;    
     
     const float voltage_threshold;
     static constexpr uint8_t VIOLATION_THRESHOLD = 3;
-    static constexpr uint32_t SWITCH_DELAY_US = 100;  // 100 мкс dead time для MOSFET
+    static constexpr uint32_t SWITCH_DELAY_US = 100; 
     
-    // Инициализация DWT для микросекундных измерений
+    
     void init_dwt() {
-        CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;  // Включить TRCENA
-        DWT->CYCCNT = 0;                                  // Сбросить счетчик
-        DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;             // Включить счетчик циклов
+        CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;  
+        DWT->CYCCNT = 0;                                  
+        DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;             
     }
     
-    // Получить текущее время в микросекундах
     uint32_t micros() {
         return DWT->CYCCNT / (SystemCoreClock / 1000000);
     }
     
-    // Начать асинхронное переключение
     void begin_switch(PowerSource target) {
         if (switch_state != SwitchState::IDLE) {
-            return;  // Переключение уже идет, игнорируем
+            return;  
         }
         
         pending_source = target;
         switch_state = SwitchState::WAIT_DEAD_TIME;
         
-        // Шаг 1: Выключить ВСЕ пины (break-before-make)
+        // break-before-make
         HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
         HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
         HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_RESET);
         HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10, GPIO_PIN_RESET);
         
-        // Запомнить время начала
         switch_start_time = micros();
     }
     
-    // Завершить переключение (вызывается после dead time)
     void complete_switch() {
         switch (pending_source) {
             case PowerSource::MAIN:
@@ -82,7 +78,6 @@ private:
                 break;
                 
             case PowerSource::NONE:
-                // Все уже выключено
                 break;
         }
         
@@ -100,11 +95,10 @@ public:
           violation_count(0),
           voltage_threshold(threshold) {
         
-        init_dwt();                      // Инициализировать DWT
-        begin_switch(PowerSource::MAIN);  // Запустить асинхронное переключение на MAIN
+        init_dwt();                      
+        begin_switch(PowerSource::MAIN);  
     }
     
-    // ВАЖНО: Вызывать в main loop для завершения переключений!
     void update() {
         if (switch_state == SwitchState::WAIT_DEAD_TIME) {
             uint32_t elapsed = micros() - switch_start_time;
@@ -117,7 +111,6 @@ public:
     
 
     void check_and_switch(const ADC_VoltageBuffers_t& raw_buffer) {
-        // Не проверять если идет переключение
         if (switch_state != SwitchState::IDLE) {
             return;
         }
@@ -130,7 +123,6 @@ public:
         bool main_ok = main_voltage >= voltage_threshold;
         bool reserve_ok = reserve_voltage >= voltage_threshold;
         
-        // Оба источника плохие
         if (!main_ok && !reserve_ok) {
             violation_count++;
             if (violation_count >= VIOLATION_THRESHOLD) {
@@ -180,7 +172,6 @@ public:
         }
     }
     
-    // Улучшенный метод для атомарной проверки и сброса флага
     bool check_and_clear_flag() {
         if (flag) {
             flag = false;

@@ -10,7 +10,7 @@ extern "C" {
 #include "stm32f4xx_hal.h"
 #include <stdbool.h>
 
-uint8_t checksum(uint8_t* buff, char length);
+uint8_t checksum(const uint8_t* buff, const uint8_t length);
 
 #ifdef __cplusplus
 }

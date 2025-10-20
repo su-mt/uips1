@@ -37,12 +37,15 @@ void init ();
 extern PowerManager power_manager;
 
 int main() {
-    init();
-    HAL_Delay(500);
+
+        init();
+        
     
+    // wait for consts from uartr2
 
 
-    // wait for consts
+    HAL_Delay(500);
+        
 
     const uint8_t msg[] = "Wait for start command\r\n";
     HAL_UART_Transmit(&huart2, msg, sizeof(msg), 100);

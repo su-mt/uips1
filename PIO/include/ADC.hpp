@@ -28,8 +28,6 @@ private:
     float out1;
     float out2;
 
-
-
     float adc_to_voltage(uint16_t adc_value) const {
         constexpr float V_REF = 3.3f;
         constexpr uint16_t ADC_MAX = 4095;  

@@ -13,7 +13,7 @@ extern "C" {
 
 // Глобальные переменные UART2
 extern UART_HandleTypeDef huart2;
-extern uint8_t uart2Buff[5];
+extern uint8_t uart2Buff[21];
 extern uint8_t uart2_rxByte;
 extern uint8_t uart2_rxCount;
 
@@ -30,6 +30,10 @@ void uips_getCurrent(void);
 void uips_getResistance(void);
 void uips_getConsts(void);
 void uips_err(void);
+
+
+void uips_saveConsts();
+void uips_saveCurr();
 
 #ifdef __cplusplus
 }
