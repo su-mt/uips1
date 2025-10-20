@@ -4,6 +4,7 @@
 #include "main.h"
 #include "stm32f411xe.h"
 #include "stm32f4xx_hal_gpio.h"
+#include <cstring>
 
 
 // Глобальные переменные АЦП и DMA
@@ -88,5 +89,6 @@ void MX_ADC1_Init() {
 extern "C" void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc) {
     if (hadc->Instance == ADC1) {
         power_manager.set_flag(true);
+        
     }
 }

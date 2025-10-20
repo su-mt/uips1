@@ -50,14 +50,21 @@ int main() {
 
     HAL_UART_Receive_IT(&huart2, &uart2_rxByte, 1);
 
+    uint32_t loop_counter = 0;
     while(1) {
 
         // проверка кан
         power_manager.update();  
         if (power_manager.check_and_clear_flag()) {
             power_manager.check_and_switch(adc_vol_buff);
+            
+            // ОТЛАДКА: флаг сработал
+            if (++loop_counter >= 10) {
+                loop_counter = 0;
+                const uint8_t msg[] = "[MAIN] Flag cleared, check_and_switch called\r\n";
+                HAL_UART_Transmit(&huart2, msg, sizeof(msg)-1, 100);
+            }
         }
-        for(int i = 0; i < 1e4; i++) { volatile int x = i; }
     }
 }
 

@@ -72,15 +72,19 @@ void uips_stop() {
 void uips_getCurrent() {
     if (!enabled) return;
     
-    buf_CurrentResponse buff = get_buf_CurrResp(power_manager.get_curr_vol_mv(), \
-    power_manager.is_main_active(), \
-    power_manager.is_reserve_active());
+    // Закомментировано для отладки
+    // buf_CurrentResponse buff = get_buf_CurrResp(power_manager.get_curr_vol_mv(), \
+    // power_manager.is_main_active(), \
+    // power_manager.is_reserve_active());
 
-    char msg[30];
-    snprintf(msg, sizeof(msg), "%f,%d,%d\r\n", 
+    // ОТЛАДКА: расширенный вывод
+    char msg[80];
+    snprintf(msg, sizeof(msg), "[GET] V:%.2f M:%d R:%d Sw:%d Cnt:%d\r\n", 
              power_manager.get_curr_vol(),
              (int)power_manager.is_main_active(),
-             power_manager.is_reserve_active());
+             (int)power_manager.is_reserve_active(),
+             (int)power_manager.is_switching(),
+             power_manager.get_violation_count());
 
     HAL_UART_Transmit(&huart2, (const uint8_t*)msg, strlen(msg), 100);
 

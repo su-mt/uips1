@@ -1,4 +1,5 @@
 #include "PowerManager.hpp"
+#include <cstring>
 
 // Конструктор
 PowerManager::PowerManager(float threshold) 
@@ -45,6 +46,14 @@ void PowerManager::begin_switch(PowerSource target) {
     HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10, GPIO_PIN_RESET);
     
     switch_start_time = micros();
+    
+    // ОТЛАДКА: начало переключения
+    extern UART_HandleTypeDef huart2;
+    char debug[50];
+    const char* target_name = (target == PowerSource::MAIN) ? "MAIN" :
+                              (target == PowerSource::RESERVE) ? "RESERVE" : "NONE";
+    snprintf(debug, sizeof(debug), "[BEGIN] Switching to %s...\r\n", target_name);
+    HAL_UART_Transmit(&huart2, (uint8_t*)debug, strlen(debug), 100);
 }
 
 // Завершение переключения после dead time
@@ -67,6 +76,15 @@ void PowerManager::complete_switch() {
     current_source = pending_source;
     switch_state = SwitchState::IDLE;
     violation_count = 0;
+    
+    // ОТЛАДКА: вывод статуса переключения
+    extern UART_HandleTypeDef huart2;
+    char debug[60];
+    const char* source_name = (current_source == PowerSource::MAIN) ? "MAIN" :
+                              (current_source == PowerSource::RESERVE) ? "RESERVE" : "NONE";
+    snprintf(debug, sizeof(debug), "[SWITCH] -> %s (%.1fV/%.1fV)\r\n", 
+             source_name, main_voltage, reserve_voltage);
+    HAL_UART_Transmit(&huart2, (uint8_t*)debug, strlen(debug), 100);
 }
 
 // Обновление состояния - проверка dead time
@@ -82,7 +100,22 @@ void PowerManager::update() {
 
 // Проверка напряжения и переключение источников
 void PowerManager::check_and_switch(const ADC_VoltageBuffers_t& raw_buffer) {
+    // ОТЛАДКА: вход в функцию
+    extern UART_HandleTypeDef huart2;
+    static uint8_t entry_counter = 0;
+    if (++entry_counter >= 10) {
+        entry_counter = 0;
+        const char* entry_msg = "[DEBUG] check_and_switch() called\r\n";
+        HAL_UART_Transmit(&huart2, (uint8_t*)entry_msg, strlen(entry_msg), 100);
+    }
+    
     if (switch_state != SwitchState::IDLE) {
+        static uint8_t skip_counter = 0;
+        if (++skip_counter >= 10) {
+            skip_counter = 0;
+            const char* skip_msg = "[DEBUG] Skipped: switching in progress\r\n";
+            HAL_UART_Transmit(&huart2, (uint8_t*)skip_msg, strlen(skip_msg), 100);
+        }
         return;
     }
     
@@ -95,6 +128,19 @@ void PowerManager::check_and_switch(const ADC_VoltageBuffers_t& raw_buffer) {
     
     bool main_ok = main_voltage >= voltage_threshold;
     bool reserve_ok = reserve_voltage >= voltage_threshold;
+    
+    // ОТЛАДКА: вывод текущего состояния
+    static uint8_t debug_counter = 0;
+    if (++debug_counter >= 10) {  // Каждый 10-й вызов (раз в секунду при 100мс)
+        debug_counter = 0;
+        char debug[80];
+        const char* src_name = (current_source == PowerSource::MAIN) ? "MAIN" :
+                               (current_source == PowerSource::RESERVE) ? "RES" : "NONE";
+        snprintf(debug, sizeof(debug), "[CHECK] Src:%s M:%.1fV(%d) R:%.1fV(%d) Cnt:%d Thr:%.1f\r\n", 
+                 src_name, main_voltage, main_ok, reserve_voltage, reserve_ok, 
+                 violation_count, voltage_threshold);
+        HAL_UART_Transmit(&huart2, (uint8_t*)debug, strlen(debug), 100);
+    }
     
     // Если оба источника недоступны
     if (!main_ok && !reserve_ok) {
