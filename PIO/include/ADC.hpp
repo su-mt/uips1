@@ -14,6 +14,7 @@ extern "C" {
 #endif
 
 
+
 struct ADC_VoltageBuffers_t {
     volatile uint16_t main;
     volatile uint16_t reserve;

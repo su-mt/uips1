@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 
-constexpr float voltage_lower_bound = 5;
+constexpr float voltage_lower_bound = -1;
 
 
 // Константы датчика (13 байт)

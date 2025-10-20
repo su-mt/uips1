@@ -41,7 +41,7 @@ namespace PacketTypes {
 class __Packet {
 protected:
     const uint8_t* buff;
-    const uint8_t len;
+    uint8_t len;
 
 public:
     void (*process_func) () ;
@@ -72,14 +72,23 @@ public:
         switch (FunCode) {
             case PacketTypes::FunctionCode::START:
                 process_func = &uips_start;
+                break;
             case PacketTypes::FunctionCode::STOP:
                 process_func = &uips_stop;
+                break;
             case PacketTypes::FunctionCode::GET_CONSTS:
                 process_func = &uips_getConsts;
+                break;
             case PacketTypes::FunctionCode::GET_CURRENT:
                 process_func = &uips_getCurrent;
+                break;
             case PacketTypes::FunctionCode::GET_RESISTANCE:
                 process_func = &uips_getResistance;
+                break;
+            default:
+                process_func = &uips_err;
+                break;
+
 
         }
     }
@@ -91,7 +100,7 @@ public:
                 buff[1] == BYTE_1 &&
                 buff[2] == BYTE_2 &&
                 buff[3] >= 0xF1 && buff[3] <= 0xF5 &&
-                buff[4] == checksum(buff, len-1);
+                buff[4] == checksum(buff, len);
         }
         
         uint8_t get_function_code() const {
@@ -121,7 +130,7 @@ public:
         return buff[0] == ADDR &&
             buff[1] == BYTE_1 &&
             buff[2] == BYTE_2 &&
-            buff[12] == checksum(buff, len-1);
+            buff[12] == checksum(buff, len);
         }
     
     SystemConstants_t* get_constants() const {
@@ -144,7 +153,7 @@ public:
         if (len != LEN) return false;
         
         return buff[0] == BROADCAST_ADDR &&
-               buff[19] == checksum(buff, len-1);
+               buff[19] == checksum(buff, len);
     }
 };
 
@@ -166,7 +175,7 @@ public:
     }
 
     static void process (const uint8_t* buff, const uint8_t len) {
-        Type type = identify(buff, len);
+        volatile Type type = identify(buff, len);
 
         switch (type) {
         case Packet::Type::CONTROL: {

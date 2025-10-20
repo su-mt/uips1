@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include "constants.hpp"
 #include "Packets.hpp"
+#include "PowerManager.hpp"
 
 extern bool enabled;
 
@@ -15,17 +16,30 @@ UART_HandleTypeDef huart2;
 uint8_t uart2Buff[21];
 uint8_t uart2_rxByte;     
 uint8_t uart2_rxCount = 0;
+extern PowerManager power_manager;
 
 
 // Обработчик UART2
 void huart2_Handler(bool overflow) {
     if (!overflow) {
         uart2Buff[uart2_rxCount++] = uart2_rxByte;
+
+        if (uart2_rxCount >= sizeof(uart2Buff)) {
+            uart2_rxCount = 0;
+        }
+        
+
+        if (uart2_rxCount == 1) {
+            HAL_TIM_Base_Start_IT(&htim3);  
+        }
+
         __HAL_TIM_SET_COUNTER(&htim3, 0);
         
     } else {
-        
-        Packet().process(uart2Buff, uart2_rxCount);
+        HAL_TIM_Base_Stop_IT(&htim3);
+
+
+        Packet::process(uart2Buff, uart2_rxCount);
 
         // Очистка буфера и сброс счетчика после обработки пакета
         memset(uart2Buff, 0, 21);
@@ -56,12 +70,21 @@ void uips_stop() {
 }
 
 void uips_getCurrent() {
-    if (!enabled){
-        return;
-    }
-    const uint8_t msg[] = "CURRENT: 0\r\n";
-    //HAL_UART_Transmit(&huart2, msg, sizeof(msg)-1, 100);
-    HAL_UART_Transmit(&huart2, (const uint8_t*) &adc_vol_buff, sizeof(adc_vol_buff)-1, 100);
+    if (!enabled) return;
+    
+    buf_CurrentResponse buff = get_buf_CurrResp(power_manager.get_curr_vol_mv(), \
+    power_manager.is_main_active(), \
+    power_manager.is_reserve_active());
+
+    char msg[30];
+    snprintf(msg, sizeof(msg), "%f,%d,%d\r\n", 
+             power_manager.get_curr_vol(),
+             (int)power_manager.is_main_active(),
+             power_manager.is_reserve_active());
+
+    HAL_UART_Transmit(&huart2, (const uint8_t*)msg, strlen(msg), 100);
+
+    // 
 }
 
 void uips_getResistance() {
@@ -69,7 +92,7 @@ void uips_getResistance() {
         return;
     }
     const uint8_t msg[] = "RESISTANCE: 0\r\n";
-    HAL_UART_Transmit(&huart2, msg, sizeof(msg)-1, 100);
+    HAL_UART_Transmit(&huart2, msg, sizeof(msg), 100);
 }
 
 void uips_getConsts() {
@@ -77,7 +100,7 @@ void uips_getConsts() {
         return;
     }
     const uint8_t msg[] = "CONSTS: OK\r\n";
-    HAL_UART_Transmit(&huart2, msg, sizeof(msg)-1, 100);
+    HAL_UART_Transmit(&huart2, msg, sizeof(msg), 100);
 }
 
 void uips_err() {
@@ -85,11 +108,11 @@ void uips_err() {
         return;
     }
     const uint8_t msg[] = "Function code ERROR\r\n";
-    HAL_UART_Transmit(&huart2, msg, sizeof(msg)-1, 100);
+    HAL_UART_Transmit(&huart2, msg, sizeof(msg), 100);
 }
 
 
-void uips_sendConsts() {
+void uips_saveConsts() {
     return;
 }
 
@@ -111,4 +134,30 @@ void MX_USART2_UART_Init(void) {
     Error_Handler();
     }
 
+}
+
+// На F3 - 0x80, 0x00, 0x01, 0x1X, 0xYZ, 0x5x (X,YZ– двоично-десятичное число; 0x5x- младшие два бита отображают ОСНОВНОЙ и РЕЗЕРВНЫЙ).
+buf_CurrentResponse get_buf_CurrResp (uint16_t vol_mv, bool main_status, bool reserve_status ) {
+    buf_CurrentResponse resp = {
+        .address_1 = 0x80,
+        .address_2 = 0x00,
+        .address_3 = 0x01  
+    };
+
+    uint16_t vol_dv = (vol_mv+50)/100;
+
+    if (vol_dv >999) {
+        vol_dv =999;
+    }
+
+    uint8_t hundreds = (vol_dv / 100) % 10;
+    uint8_t tens = (vol_dv / 10) % 10;
+    uint8_t units = vol_dv % 10;
+
+    resp.voltage_high = 0x10 | hundreds;
+    resp.voltage_low = (tens << 4) | units;
+
+    resp.status = 0x50 | (reserve_status << 1) | main_status;
+
+    return resp;
 }

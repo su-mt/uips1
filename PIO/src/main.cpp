@@ -1,7 +1,4 @@
 
-#include <cstddef>
-#include <cstdint>
-#include <cstring>
 #include "PowerManager.hpp"
 #include "UART2.h"
 #include "UART1.h"
@@ -28,7 +25,7 @@ extern "C" {
 }
 
 
-bool enabled = false;
+bool enabled = true;
 
 // Callback при приеме данных по UART
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
@@ -38,14 +35,15 @@ extern PowerManager power_manager;
 
 int main() {
 
-        init();
-        
-    
+    //for(int i = 0; i < 1e5; i++) { volatile int x = i; }
+    init();
+
+
     // wait for consts from uartr2
 
 
-    HAL_Delay(500);
-        
+
+    //for(int i = 0; i < 1e5; i++) { volatile int x = i; }
 
     const uint8_t msg[] = "Wait for start command\r\n";
     HAL_UART_Transmit(&huart2, msg, sizeof(msg), 100);
@@ -59,7 +57,7 @@ int main() {
         if (power_manager.check_and_clear_flag()) {
             power_manager.check_and_switch(adc_vol_buff);
         }
-        
+        for(int i = 0; i < 1e4; i++) { volatile int x = i; }
     }
 }
 
@@ -70,15 +68,19 @@ void init () {
 
     MX_GPIO_Init();
 
+    MX_TIM3_Init();
+    MX_TIM2_Init();
+
     MX_USART6_UART_Init();
     MX_USART1_UART_Init();
     MX_USART2_UART_Init();
 
-    MX_TIM3_Init();
-    MX_TIM2_Init();
-
     MX_DMA_Init();
     MX_ADC1_Init();
+
+    
+
+
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) { 
@@ -90,3 +92,4 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
         huart6_Handler(false);
     }
 }
+
